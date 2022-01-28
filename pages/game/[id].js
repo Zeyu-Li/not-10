@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import styles from "../../styles/Home.module.css";
@@ -22,13 +22,13 @@ export default function Game() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Don't say 10</title>
+        <title>Don{"'"}t say 10</title>
         <meta name="description" content="Don't say 10 game" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Don't Say 10</h1>
+        <h1 className={styles.title}>Don{"'"}t Say 10</h1>
         <p className={styles.description}>
           {turn ? "Your Turn" : "Waiting for opponent"}
         </p>
@@ -38,6 +38,7 @@ export default function Game() {
           {nums.map((num) => {
             return (
               <a
+                key={num}
                 className={`${styles.card} ${
                   turn ? "" : styles.selectableDisabled
                 }`}
@@ -52,14 +53,10 @@ export default function Game() {
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://andrewli.site"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://andrewli.site" target="_blank" rel="noreferrer">
           Made by Andrew
         </a>
-        <a href="/">Quit</a>
+        <Link href="/">Quit</Link>
       </footer>
     </div>
   );

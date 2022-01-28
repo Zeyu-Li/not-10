@@ -10,13 +10,18 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Don't say 10</title>
+        <title>Don{"'"}t say 10</title>
         <meta name="description" content="Don't say 10 game" />
         <link rel="icon" href="/favicon.ico" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6540565217666405"
+          crossOrigin="anonymous"
+        ></script>
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Don't Say 10</h1>
+        <h1 className={styles.title}>Don{"'"}t Say 10</h1>
         <p className={styles.description}></p>
 
         <div className={styles.gridMain}>
@@ -37,6 +42,8 @@ export default function Home() {
             className={styles.card}
             href="https://github.com/sponsors/Zeyu-Li"
             style={{ width: 250 }}
+            target="_blank"
+            rel="noreferrer"
           >
             <h2 style={{ textAlign: "center" }}>Support the creator</h2>
             <p style={{ textAlign: "center" }}>On GitHub</p>
@@ -45,11 +52,7 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://andrewli.site"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://andrewli.site" target="_blank" rel="noreferrer">
           Made by Andrew
         </a>
       </footer>
