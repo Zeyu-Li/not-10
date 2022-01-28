@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import Script from "next/script";
 import { useRouter } from "next/router";
 import * as gtag from "../lib/gtag";
+import { useEffect } from "react";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -16,6 +17,10 @@ function MyApp({ Component, pageProps }) {
   }, [router.events]);
   return (
     <>
+      <Script
+        strategy="afterInteractive"
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6540565217666405`}
+      />
       {/* Global Site Tag (gtag.js) - Google Analytics */}
       <Script
         strategy="afterInteractive"
