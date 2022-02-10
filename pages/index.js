@@ -1,10 +1,17 @@
 import Head from "next/head";
 import Image from "next/image";
+import { get } from "../components/utils";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
   const startNewGame = () => {
     // go to new game
+    get()
+      .then((res) => res.json())
+      .then((data) => {
+        // this is the new game id
+        window.open(`${window.location.origin}/game/${data.id}`, "_self");
+      });
   };
 
   return (
