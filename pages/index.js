@@ -10,7 +10,10 @@ export default function Home() {
       .then((res) => res.json())
       .then((data) => {
         // this is the new game id
-        window.open(`${window.location.origin}/game/${data.id}`, "_self");
+        window.open(
+          `${window.location.origin}/game/${data.id}?player=${data.user}`,
+          "_self"
+        );
       });
   };
 

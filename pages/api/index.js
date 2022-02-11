@@ -27,7 +27,7 @@ const handler = async (req, res) => {
       where: { id: match.id },
       data: { person2: userId, isLooking: false },
     });
-    res.status(200).json({ id: match.uid });
+    res.status(200).json({ id: match.uid, user: 2 });
     return;
   }
 
@@ -40,7 +40,7 @@ const handler = async (req, res) => {
       person1: userId,
     },
   });
-  res.status(200).json({ id: uid });
+  res.status(200).json({ id: uid, user: 1 });
 };
 
 // websockets

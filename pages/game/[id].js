@@ -1,11 +1,13 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import io from "Socket.IO-client";
 import styles from "../../styles/Home.module.css";
+let socket;
 
 export default function Game() {
-  const { id } = useRouter().query;
+  const { id, player } = useRouter().query;
   const [turn, changeTurn] = useState(true);
   const [total, setTotal] = useState(0);
   const nums = [1, 2, 3];
@@ -16,8 +18,24 @@ export default function Game() {
     setTotal(total + number);
 
     // send to server + auth token
-    console.log(id);
+    console.log(id, player);
+    socket.emit("input-change", number);
   };
+
+  const socketInitializer = async () => {
+    await fetch("/api/socket");
+    socket = io();
+
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+
+    socket.on("update-input", (newTotal) => {
+      setTotal(newTotal);
+    });
+  };
+
+  useEffect(() => socketInitializer(), []);
 
   return (
     <div className={styles.container}>
