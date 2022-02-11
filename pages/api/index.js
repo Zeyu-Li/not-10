@@ -7,23 +7,42 @@ const prisma = new PrismaClient();
  * @returns
  */
 const uniqueId = (length = 16) => {
-  return parseInt(
-    Math.ceil(Math.random() * Date.now())
-      .toPrecision(length)
-      .toString()
-      .replace(".", ""),
-    10
-  );
+  return Math.ceil(Math.random() * Date.now())
+    .toPrecision(length)
+    .toString()
+    .replace(".", "");
 };
 
 // TODO: set up db
 const handler = async (req, res) => {
   const match = await prisma.game.findFirst({ where: { isLooking: true } });
-  console.log(match);
+  // no logging :(
 
-  const uid = uniqueId();
   const userId = uniqueId();
-  games.push(uid);
+  if (match) {
+    // console.log(match);
+    // console.log(match.uid);
+    // get match and update
+    await prisma.game.update({
+      where: { id: match.id },
+      data: { person2: userId, isLooking: false },
+    });
+    res.status(200).json({ id: match.uid });
+    return;
+  }
+
+  // else generate game
+  const uid = uniqueId();
+  await prisma.game.create({
+    data: {
+      isLooking: true,
+      uid,
+      person1: userId,
+    },
+  });
   res.status(200).json({ id: uid });
 };
+
+// websockets
+
 export default handler;
