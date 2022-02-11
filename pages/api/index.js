@@ -1,6 +1,6 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introductionNext.js
+import { PrismaClient } from "@prisma/client";
 
-const games = [];
+const prisma = new PrismaClient();
 /**
  * from https://stackoverflow.com/a/62189798/12539335
  * @param {*} length length of uid
@@ -17,8 +17,13 @@ const uniqueId = (length = 16) => {
 };
 
 // TODO: set up db
-export default function handler(req, res) {
+const handler = async (req, res) => {
+  const match = await prisma.game.findFirst({ where: { isLooking: true } });
+  console.log(match);
+
   const uid = uniqueId();
+  const userId = uniqueId();
   games.push(uid);
   res.status(200).json({ id: uid });
-}
+};
+export default handler;
