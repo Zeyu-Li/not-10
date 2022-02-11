@@ -1,0 +1,24 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// game object containing everything we need
+model Game {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  deletedAt DateTime?
+  isLooking Boolean @default(true)
+  uid String @unique
+  person1 String?
+  person2 String?
+  score Int @default(0)
+  turn Boolean @default(true)
+}

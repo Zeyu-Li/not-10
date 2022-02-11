@@ -12,6 +12,7 @@ Rules:
 - Nextjs
 - websockets
 - JWT
+- Prisma (ORM)
 
 ## License
 
