@@ -18,8 +18,8 @@ export default function Game() {
     setTotal(total + number);
 
     // send to server + auth token
-    console.log(id, player);
-    socket.emit("input-change", number);
+    // console.log(id, player);
+    socket.emit(`input-change`, JSON.stringify({ number, id, player }));
   };
 
   const socketInitializer = async () => {
@@ -27,10 +27,11 @@ export default function Game() {
     socket = io();
 
     socket.on("connect", () => {
-      console.log("connected");
+      console.log("connected websockets!");
     });
 
-    socket.on("update-input", (newTotal) => {
+    socket.on(`update-change`, (newTotal) => {
+      if (newTotal !== total) changeTurn(!turn);
       setTotal(newTotal);
     });
   };
