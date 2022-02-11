@@ -8,18 +8,30 @@ let socket;
 
 export default function Game() {
   const { id, player } = useRouter().query;
-  const [turn, changeTurn] = useState(true);
+  const [turn, changeTurn] = useState(player == 1);
   const [total, setTotal] = useState(0);
+  const [finishedModal, setFinishedModal] = useState(false);
+  const [win, setWin] = useState(false);
   const nums = [1, 2, 3];
 
   const addValue = (number) => {
     if (!turn) return;
     changeTurn(!turn);
-    setTotal(total + number);
+
+    // check 10
+    if (total + number < 11) {
+      setTotal(total + number);
+    } else {
+      // you lose
+      setTotal(10);
+      setFinishedModal(true);
+      setWin(false);
+      console.log("You lose");
+    }
 
     // send to server + auth token
     // console.log(id, player);
-    socket.emit(`input-change`, JSON.stringify({ number, id, player }));
+    socket.emit("input-change", JSON.stringify({ number, id, player }));
   };
 
   const socketInitializer = async () => {
@@ -27,12 +39,24 @@ export default function Game() {
     socket = io();
 
     socket.on("connect", () => {
+      socket.emit("fetch-info", JSON.stringify({ id, player }));
       console.log("connected websockets!");
     });
 
-    socket.on(`update-change`, (newTotal) => {
+    socket.on("update-change", (newTotal) => {
       if (newTotal !== total) changeTurn(!turn);
       setTotal(newTotal);
+    });
+
+    socket.on("fetched-info", (data) => {
+      const { turn, score } = data;
+      setTotal(score);
+      // if the opponent gets 10 u win!
+      if (score > 9 && !finishedModal) {
+        setWin(true);
+        setFinishedModal(true);
+      }
+      changeTurn(turn);
     });
   };
 
@@ -52,6 +76,9 @@ export default function Game() {
           {turn ? "Your Turn" : "Waiting for opponent"}
         </p>
         <p className={styles.currentValue}>{total}</p>
+        {finishedModal ? (
+          <p>{win ? "You won!!" : "You lost, try again"}</p>
+        ) : null}
 
         <div className={styles.grid}>
           {nums.map((num) => {
