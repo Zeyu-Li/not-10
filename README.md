@@ -11,6 +11,8 @@ Rules:
 
 ![websockets](img/websockets.gif)
 
+![logo](img/logo.png)
+
 ## Running
 
 * `yarn install` for dependencies
