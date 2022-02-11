@@ -44,6 +44,13 @@ export default function Game() {
     });
 
     socket.on("update-change", (newTotal) => {
+      // if the opponent gets 10 u win!
+      if (newTotal > 9) {
+        console.log("You win");
+
+        setWin(true);
+        setFinishedModal(true);
+      }
       if (newTotal !== total) changeTurn(!turn);
       setTotal(newTotal);
     });
@@ -52,7 +59,9 @@ export default function Game() {
       const { turn, score } = data;
       setTotal(score);
       // if the opponent gets 10 u win!
-      if (score > 9 && !finishedModal) {
+      if (score > 9 && turn) {
+        console.log("You win");
+
         setWin(true);
         setFinishedModal(true);
       }

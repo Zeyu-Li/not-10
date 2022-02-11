@@ -17,6 +17,9 @@ const SocketHandler = (req, res) => {
         // console.log(game);
         let score = game.score;
         if (number === 1 || number === 2 || number === 3) {
+          if (score == 10) {
+            return;
+          }
           if (number + score > 10) {
             score = 10;
           } else {
