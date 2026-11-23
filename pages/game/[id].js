@@ -2,12 +2,14 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import io from "Socket.IO-client";
+import io from "socket.io-client";
+import { loadToken } from "../../components/utils";
 import styles from "../../styles/Home.module.css";
 let socket;
 
 export default function Game() {
-  const { id, player } = useRouter().query;
+  const router = useRouter();
+  const { id, player } = router.query;
   const [turn, changeTurn] = useState(player == 1);
   const [total, setTotal] = useState(0);
   const [finishedModal, setFinishedModal] = useState(false);
@@ -31,7 +33,10 @@ export default function Game() {
 
     // send to server + auth token
     // console.log(id, player);
-    socket.emit("input-change", JSON.stringify({ number, id, player }));
+    socket.emit(
+      "input-change",
+      JSON.stringify({ number, id, token: loadToken(id) })
+    );
   };
 
   const socketInitializer = async () => {
@@ -39,7 +44,7 @@ export default function Game() {
     socket = io();
 
     socket.on("connect", () => {
-      socket.emit("fetch-info", JSON.stringify({ id, player }));
+      socket.emit("fetch-info", JSON.stringify({ id, token: loadToken(id) }));
       console.log("connected websockets!");
     });
 
@@ -69,7 +74,10 @@ export default function Game() {
     });
   };
 
-  useEffect(() => socketInitializer(), []);
+  // the game id is only known once the router is ready
+  useEffect(() => {
+    if (router.isReady) socketInitializer();
+  }, [router.isReady]);
 
   return (
     <div className={styles.container}>
