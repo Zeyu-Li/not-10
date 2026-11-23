@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import { get } from "../components/utils";
+import { get, saveToken } from "../components/utils";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
@@ -10,6 +10,7 @@ export default function Home() {
       .then((res) => res.json())
       .then((data) => {
         // this is the new game id
+        saveToken(data.id, data.token);
         window.open(
           `${window.location.origin}/game/${data.id}?player=${data.user}`,
           "_self"
